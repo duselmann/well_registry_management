@@ -17,10 +17,15 @@ import requests
 from xml.etree import ElementTree
 from .cache import UrlContentCache
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+import os
 
-# TODO what is the persistence of these global instances and what is the Django why
+# TODO what is the persistence of these global instances and what is the Django way
 CACHE = UrlContentCache()
-DURATION = settings.Environment['LOOKUP_VALUES_CACHE_DURATION']
+try:
+    DURATION = settings.Environment['LOOKUP_VALUES_CACHE_DURATION']
+except ImproperlyConfigured:
+    DURATION = int(os.getenv('LOOKUP_VALUES_CACHE_DURATION', '1000'))
 
 
 def get_country_codes(filter_text=None):
