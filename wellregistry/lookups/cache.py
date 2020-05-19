@@ -4,6 +4,10 @@ Simple URL Content Cache
 """
 import time
 import requests
+import logging
+
+logging.basicConfig(format='%(levelname)s:\t%(message)s', level=logging.DEBUG)
+LOG = logging.getLogger("UrlContentCache")
 
 
 class UrlContentCache:
@@ -12,36 +16,38 @@ class UrlContentCache:
     cache = {}
 
     def cache_or_fetch(self, duration, url):
+        content = None
+
         if self.is_expired(url):
-            print('fetching: ' + url)
+            LOG.debug('fetching: %s', url)
             try:
                 response = requests.get(url)
                 content = response.content
             except requests.ConnectionError:
-                print('failed to fetch: ' + url)
+                LOG.debug('failed to fetch: %s', url)
                 content = None
 
         if content is None:
-            print('using cache: ' + url)
+            LOG.debug('using cache: %s', url)
             content = self.cache.get(url)['content']
 
-        print('update cache:')
+        LOG.debug('update cache')
         self.cache_entry(duration, url, content)
         return content
 
     def cache_entry(self, duration, url, content):
-        print("caching: " + str(content)[:30])
+        LOG.debug("caching: %s", str(content)[:30])
         entry = self.cache.get(url)
-        print("new entry: " + str(entry is None))
+        LOG.debug("new entry: %r", (entry is None))
         entry = self.new_entry(url, content) if not entry else entry
         entry['expire'] = time.time()+duration
-        print("update expire: " + str(entry['expire']))
+        LOG.debug("update expire: %r", (entry['expire']))
 
     def is_expired(self, url):
         entry = self.cache.get(url)
         expire = entry['expire'] if entry else 1
         now = time.time()
-        print("expired: " + str(now >= expire))
+        LOG.debug("expired: %r", (now >= expire))
         return now >= expire
 
     def new_entry(self, url, content):
@@ -50,5 +56,5 @@ class UrlContentCache:
             'content': content,
         }
         self.cache[url] = entry
-        print("new entry: " + url)
+        LOG.debug("new entry: %s", url)
         return entry
