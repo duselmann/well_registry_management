@@ -43,6 +43,7 @@ except ValueError:
 INSTALLED_APPS = [
     'postgres',
     'registry',
+    'lookups',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
