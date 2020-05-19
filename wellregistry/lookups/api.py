@@ -15,6 +15,12 @@ same pattern instead of a unique impl for one lookup value.
 """
 import requests
 from xml.etree import ElementTree
+from .cache import UrlContentCache
+from django.conf import settings
+
+# TODO what is the persistence of these global instances and what is the Django why
+CACHE = UrlContentCache()
+DURATION = settings.Environment['LOOKUP_VALUES_CACHE_DURATION']
 
 
 def get_country_codes(filter_text=None):
@@ -81,10 +87,16 @@ def get__codes(code_type, filter_text=None):
     filter_text_append = f"?text={filter_text}:" if filter_text is not None else ""
     filter_text_append = filter_text_append.replace(':', '%3A', 2)
 
-    resp = requests.get(f"https://www.waterqualitydata.us/Codes/{code_type}code{filter_text_append}")
-    xml_data = ElementTree.fromstring(resp.content)
-    xml_codes = xml_data.findall("./Code")
+    url = f"https://www.waterqualitydata.us/Codes/{code_type}code{filter_text_append}"
+    content = CACHE.cache_or_fetch(DURATION, url)
+
     codes = {}
+    # TODO what if content is empty or None
+    if not content:
+        return codes
+
+    xml_data = ElementTree.fromstring(content)
+    xml_codes = xml_data.findall("./Code")
     for xml_code in xml_codes:
         code = xml_code.attrib["value"]
         name = xml_code.attrib["desc"]
