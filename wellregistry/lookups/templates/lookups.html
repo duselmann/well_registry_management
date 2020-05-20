@@ -1,0 +1,6 @@
+<select>
+    <option value="na">Not Applicable</option>
+  {% for lookup in lookups %}
+    <option value="{{ lookup }}">{{ lookups[lookup] }}</option>
+  {% endfor %}
+</select>
