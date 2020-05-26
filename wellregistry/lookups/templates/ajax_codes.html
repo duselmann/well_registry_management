@@ -18,7 +18,9 @@
 {% load dict_value %}
 <label for="{{ select.id }}">{{ select.label }}</label>
 <select name="{{ select.name }}" id="{{ select.id }}" required="{{ select.required }}">
-    {% if select.hint %}
+    {% if select.parent_hint %}
+        <option value="" disabled selected>{{ select.parent_hint }}</option>
+    {% elif select.hint %}
         <option value="" disabled selected>{{ select.hint }}</option>
     {% endif %}
     {% if select.na %}
@@ -50,6 +52,7 @@
         var parentRef = '#'+'{{ select.parent_filter }}'
         console.log('parent {{ select.parent_filter}}' )
         $(parentRef).change(function() {
+            $(thisRef)[0][0].textContent = '{{ select.hint }}'
             var parentCode = $(parentRef).val();
             var url = '/codes/{{ select.code }}/'+parentCode
             console.log('parent {{ select.parent_filter}}')

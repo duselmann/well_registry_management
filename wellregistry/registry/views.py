@@ -58,8 +58,8 @@ class BasePage(TemplateView):
                 'name': 'state_ajax_name',
                 'label': 'State',
                 'na': True,
-                'hint': 'Select ajax State',
-                'parent hint': 'Select ajax Country First',
+                'hint': 'Select State by Ajax',
+                'parent_hint': 'Select ajax Country First',
                 'parent_filter': 'country_ajax_id'
             },
         }
