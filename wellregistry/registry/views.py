@@ -20,6 +20,14 @@ class BasePage(TemplateView):
         codes = Codes()
 
         context = {
+            'country_ajax': {
+                'code':  'country',
+                'id':    'country_ajax_id',
+                'name':  'country_ajax_name',
+                'label': 'Country',
+                'na':    True,
+                'hint':  'Select a Country by Ajax',
+            },
             'country_codes': {
                 'id':    'country_selection_id',
                 'name':  'country_form_name',
