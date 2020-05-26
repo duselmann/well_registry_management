@@ -32,7 +32,7 @@ class Codes:
             Codes.LOG.error("Configuration Error: Expect 'LOOKUP_URL_HOST' defined in settings. "
                             "Defaulting to waterqualityportal.")
         # then augment it with the parameters
-        self.url += "/Codes/%scode%s"
+        self.url += "/Codes/%scode"
 
     def get_country_codes(self, filter_text=None):
         """
@@ -66,6 +66,22 @@ class Codes:
         filter_text = f"{country}:{state}" if country is not None or state is not None else ""
         return self.get_codes('county', filter_text)
 
+    def get_county_codes(self, filter_text):
+        """
+        Lookup the collection of county codes present in the service endpoint reduced by the filter text.
+
+        The number of county is relatively large and contains codes to filter on country and state.
+        If a country and state are provided then it is able to reduce the response collection to those
+        most relevant to the input. It is likely that the country and state have already been selected.
+
+        :param filter_text: string used to pair down the result set to a given subset.
+            country code or name used to reduce the counties in that country.
+            state code or name used to reduce the counties in that state or province.
+        :return: a dictionary of county codes and descriptions
+
+        """
+        return self.get_codes('county', filter_text)
+
     def get_state_codes(self, filter_text=None):
         """
         Lookup the collection of state codes present in the service endpoint reduced by the filter text.
@@ -92,14 +108,10 @@ class Codes:
         :return: a dictionary of codes and descriptions that match the filter text.
 
         """
-        filter_text_append = f"?text={filter_text}:" if filter_text is not None else ""
-        filter_text_append = filter_text_append.replace(':', '%3A', 2)
-
-        url = self.url % (code_type, filter_text_append)
+        url = self.url % code_type
         content = Codes.CACHE.fetch(url)
 
         codes = {}
-        # TODO what if content is empty or None
         if not content:
             return codes
 
@@ -108,6 +120,12 @@ class Codes:
         for xml_code in xml_codes:
             code = xml_code.attrib["value"]
             name = xml_code.attrib["desc"]
-            codes[code] = name
+            if filter_text:
+                if filter_text in code or filter_text in name:
+                    codes[code] = name
+            else:
+                codes[code] = name
+
+        # TODO sort by name ?
 
         return codes

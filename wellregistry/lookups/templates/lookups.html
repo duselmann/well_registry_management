@@ -1,6 +1,28 @@
-<select>
-    <option value="na">Not Applicable</option>
-  {% for lookup in lookups %}
-    <option value="{{ lookup }}">{{ lookups[lookup] }}</option>
-  {% endfor %}
+{% comment %}
+    Name:: Codes Options Template
+    Description::
+        Helper to create codes selectors with optional "Not Applicable" entry.
+
+    Parameters::
+        select.label: descriptive text displayed (for the user) before the <select/>
+        select.id:    <select id=""/> component id for label to be linked.
+        select.name:  form/ajax data submit name
+        select.na:    boolean indicates "Not Applicable" should be included when true.
+        select.hint:  disabled first <option>text user hint</option>
+            This parameter is optional. If omitted then there will be not hint text.
+        select.codes: dictionary of code keys and friendly name values
+
+{% endcomment %}
+{% load dict_value %}
+<label for="{{ select.id }}">{{ select.label }}</label>
+<select name="{{ select.name }}" id="{{ select.id }}" required="{{ select.required }}">
+    {% if select.hint %}
+        <option value="" disabled selected>{{ select.hint }}</option>
+    {% endif %}
+    {% if select.na %}
+        <option value="na">Not Applicable</option>
+    {% endif %}
+    {% for code in select.codes %}
+        <option value="{{ code }}">{% dict_value select.codes code %}</option>
+    {% endfor %}
 </select>
