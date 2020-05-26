@@ -22,6 +22,14 @@ class UrlContentCache:
         self.cache = {}
 
     def fetch(self, url, duration=DURATION):
+        """
+        Main entry point to fetch data from a URL with cache management.
+
+        :param url: The endpoint to fetch data.
+        :param duration: Number of seconds to retain the cache before expiration and fetch.
+        :returns: HTTP Response from the given URL.
+
+        """
         content = None
 
         if self._is_expired(url):
@@ -42,6 +50,7 @@ class UrlContentCache:
         return content
 
     def _cache_entry(self, duration, url, content):
+        """Internal cache content manager."""
         UrlContentCache.LOG.debug("caching: %s", str(content)[:30])
         entry = self.cache.get(url)
         UrlContentCache.LOG.debug("new entry: %r", (entry is None))
@@ -50,6 +59,7 @@ class UrlContentCache:
         UrlContentCache.LOG.debug("update expire: %r", (entry['expire']))
 
     def _is_expired(self, url):
+        """Internal cache expiration manager."""
         entry = self.cache.get(url)
         expire = entry['expire'] if entry else 1
         now = time.time()
@@ -57,6 +67,7 @@ class UrlContentCache:
         return now >= expire
 
     def _new_entry(self, url, content):
+        """Internal cache new entry manager."""
         entry = {
             'expire': time.time(),
             'content': content,

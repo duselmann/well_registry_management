@@ -12,7 +12,11 @@
         select.na:    boolean indicates "Not Applicable" should be included when true.
         select.hint:  disabled first <option>text user hint</option>
             This parameter is optional. If omitted then there will be not hint text.
-        select.codes: dictionary of code keys and friendly name values
+        select.code:  restful api url parameter for the desired codes.
+        select.parent_filter: the html element id of the select that filters this one
+            If none then there is no parent to filter this selection.
+        select.parent_hint: If there is a parent then this hint will be used before there is a selection.
+            Once the parent has been selected then the select.hint is used.
 
 {% endcomment %}
 {% load dict_value %}
@@ -32,6 +36,7 @@
 (function () {
     var thisRef = '#'+'{{ select.id }}'
 
+    // Helper method to use AJAX to fetch the codes values and populate the options list.
     function getCodes(url) {
         $.get({
             url: url,
@@ -47,7 +52,9 @@
             }
         });
     }
+    // condition on parent filter id present or not
     {% if select.parent_filter %}
+        // when parent filter id is present this js will link this components list to it
         console.log('parent {{ select.parent_filter}}' )
         var parentRef = '#'+'{{ select.parent_filter }}'
         console.log('parent {{ select.parent_filter}}' )
@@ -55,10 +62,11 @@
             $(thisRef)[0][0].textContent = '{{ select.hint }}'
             var parentCode = $(parentRef).val();
             var url = '/codes/{{ select.code }}/'+parentCode
-            console.log('parent {{ select.parent_filter}}')
+            console.log('parent ' + parentCode)
             getCodes(url)
         })
     {% else %}
+        // when no parent filter id is present this js will the list raw
         console.log('no parent' )
         var url = '/codes/{{ select.code }}'
         getCodes(url)
