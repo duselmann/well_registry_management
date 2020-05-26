@@ -18,14 +18,9 @@ from xml.etree import ElementTree
 from .cache import UrlContentCache
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-import os
 
 # TODO what is the persistence of these global instances and what is the Django way
 CACHE = UrlContentCache()
-try:
-    DURATION = settings.Environment['LOOKUP_VALUES_CACHE_DURATION']
-except ImproperlyConfigured:
-    DURATION = int(os.getenv('LOOKUP_VALUES_CACHE_DURATION', '1000'))
 
 
 def get_country_codes(filter_text=None):
@@ -93,7 +88,7 @@ def get__codes(code_type, filter_text=None):
     filter_text_append = filter_text_append.replace(':', '%3A', 2)
 
     url = f"https://www.waterqualitydata.us/Codes/{code_type}code{filter_text_append}"
-    content = CACHE.cache_or_fetch(DURATION, url)
+    content = CACHE.fetch(url)
 
     codes = {}
     # TODO what if content is empty or None
