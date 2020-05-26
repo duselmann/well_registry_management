@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # this is our registry page
-    path('registry/', include('registry.urls'))
+    path('registry/', include('registry.urls')),
+
+    path('codes/', include('lookups.urls')),
 ]
