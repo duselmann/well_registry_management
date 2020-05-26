@@ -60,7 +60,7 @@ class BasePage(TemplateView):
                 'label': 'State Ajax',
                 'na': True,
                 'hint': 'Select State by Ajax',
-                'parent_hint': 'Select ajax Country First',
+                'parent_hint': '<-- Select ajax Country First',
                 'parent_filter': 'country_ajax_id'
             },
             'county_ajax': {
@@ -70,7 +70,7 @@ class BasePage(TemplateView):
                 'label': 'County Ajax',
                 'na': True,
                 'hint': 'Select a County by Ajax',
-                'parent_hint': 'Select ajax State First',
+                'parent_hint': '<-- Select ajax State First',
                 'parent_filter': 'state_ajax_id'
             },
         }

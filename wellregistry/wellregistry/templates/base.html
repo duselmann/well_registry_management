@@ -13,8 +13,11 @@
     </h1>
 
     <div>
-        <p>Codes Test</p>
-
+        <p>Codes Test DEMO</p>
+<br>
+<br>
+        <p>Server Side DEMO</p>
+<br>
         {% comment %}
             no need for path to template if defined in settings.py TEMPLATES section
         {% endcomment %}
@@ -22,6 +25,13 @@
         {% include "lookups.html" with select=state_codes %}
         {% include "lookups.html" with select=county_codes %}
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+        <p>AJAX DEMO</p>
 <br>
         {% include "ajax_codes.html" with select=country_ajax %}
         {% include "ajax_codes.html" with select=state_ajax %}
