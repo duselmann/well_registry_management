@@ -28,6 +28,22 @@ class BasePage(TemplateView):
                 'hint':  'Select a Country',
                 'codes': codes.get_country_codes(),
             },
+            'county_codes': {
+                'id': 'county_selection_id',
+                'name': 'county_form_name',
+                'label': 'County',
+                'na': True,
+                'hint': 'Select a County',
+                'codes': codes.get_county_codes('Wisconsin'),
+            },
+            'state_codes': {
+                'id': 'state_selection_id',
+                'name': 'state_form_name',
+                'label': 'State',
+                'na': True,
+                'hint': 'Select a State',
+                'codes': codes.get_state_codes('US'),
+            },
         }
 
         return context

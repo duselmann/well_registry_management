@@ -19,6 +19,8 @@
             no need for path to template if defined in settings.py TEMPLATES section
         {% endcomment %}
         {% include "lookups.html" with select=country_codes %}
+        {% include "lookups.html" with select=state_codes %}
+        {% include "lookups.html" with select=county_codes %}
 
     </div>
 </body>
