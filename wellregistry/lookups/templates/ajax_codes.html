@@ -30,9 +30,9 @@
 (function () {
     var thisRef = '#'+'{{ select.id }}'
 
-    function getCodes() {
+    function getCodes(url) {
         $.get({
-            url: '/codes/{{ select.code }}',
+            url: url,
             dataType: 'json',
             success: function (response) {
                 for (var id in response) {
@@ -47,9 +47,18 @@
     }
     {% if select.parent_filter %}
         console.log('parent {{ select.parent_filter}}' )
+        var parentRef = '#'+'{{ select.parent_filter }}'
+        console.log('parent {{ select.parent_filter}}' )
+        $(parentRef).change(function() {
+            var parentCode = $(parentRef).val();
+            var url = '/codes/{{ select.code }}/'+parentCode
+            console.log('parent {{ select.parent_filter}}')
+            getCodes(url)
+        })
     {% else %}
         console.log('no parent' )
-        getCodes()
+        var url = '/codes/{{ select.code }}'
+        getCodes(url)
     {% endif %}
 }());
 

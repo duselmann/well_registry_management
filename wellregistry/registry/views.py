@@ -52,6 +52,16 @@ class BasePage(TemplateView):
                 'hint': 'Select a State',
                 'codes': codes.get_state_codes('US'),
             },
+            'state_ajax': {
+                'code':  'state',
+                'id': 'state_ajax_id',
+                'name': 'state_ajax_name',
+                'label': 'State',
+                'na': True,
+                'hint': 'Select ajax State',
+                'parent hint': 'Select ajax Country First',
+                'parent_filter': 'country_ajax_id'
+            },
         }
 
         return context
