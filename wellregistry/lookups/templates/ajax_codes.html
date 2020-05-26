@@ -26,20 +26,31 @@
     {% endif %}
 </select>
 <script>
+
+(function () {
     var thisRef = '#'+'{{ select.id }}'
 
-    $.get({
-        url: '/codes/{{ select.code }}',
-        dataType: 'json',
-        success:function(response){
-            for (var id in response) {
-                var name = response[id]
-                // console.log('id:' + id + ', val:' + name )
+    function getCodes() {
+        $.get({
+            url: '/codes/{{ select.code }}',
+            dataType: 'json',
+            success: function (response) {
+                for (var id in response) {
+                    var name = response[id]
+                    // console.log('id:' + id + ', val:' + name )
 
-                $(thisRef)
-                    .append("<option value='"+id+"'>"+name+"</option>");
+                    $(thisRef)
+                        .append("<option value='" + id + "'>" + name + "</option>");
+                }
             }
-        }
-    });
+        });
+    }
+    {% if select.parent_filter %}
+        console.log('parent {{ select.parent_filter}}' )
+    {% else %}
+        console.log('no parent' )
+        getCodes()
+    {% endif %}
+}());
 
 </script>
