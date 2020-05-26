@@ -20,47 +20,58 @@ class BasePage(TemplateView):
         codes = Codes()
 
         context = {
-            'country_ajax': {
-                'code':  'country',
-                'id':    'country_ajax_id',
-                'name':  'country_ajax_name',
-                'label': 'Country',
-                'na':    True,
-                'hint':  'Select a Country by Ajax',
-            },
             'country_codes': {
                 'id':    'country_selection_id',
                 'name':  'country_form_name',
-                'label': 'Country',
+                'label': 'Country Server',
                 'na':    True,
                 'hint':  'Select a Country',
                 'codes': codes.get_country_codes(),
             },
+            'state_codes': {
+                'id': 'state_selection_id',
+                'name': 'state_form_name',
+                'label': 'State Server',
+                'na': True,
+                'hint': 'Select a State',
+                'codes': codes.get_state_codes('US'),
+            },
             'county_codes': {
                 'id': 'county_selection_id',
                 'name': 'county_form_name',
-                'label': 'County',
+                'label': 'County Server',
                 'na': True,
                 'hint': 'Select a County',
                 'codes': codes.get_county_codes('Wisconsin'),
             },
-            'state_codes': {
-                'id': 'state_selection_id',
-                'name': 'state_form_name',
-                'label': 'State',
+
+            'country_ajax': {
+                'code': 'country',
+                'id': 'country_ajax_id',
+                'name': 'country_ajax_name',
+                'label': 'Country Ajax',
                 'na': True,
-                'hint': 'Select a State',
-                'codes': codes.get_state_codes('US'),
+                'hint': 'Select a Country by Ajax',
             },
             'state_ajax': {
                 'code':  'state',
                 'id': 'state_ajax_id',
                 'name': 'state_ajax_name',
-                'label': 'State',
+                'label': 'State Ajax',
                 'na': True,
                 'hint': 'Select State by Ajax',
                 'parent_hint': 'Select ajax Country First',
                 'parent_filter': 'country_ajax_id'
+            },
+            'county_ajax': {
+                'code': 'county',
+                'id': 'county_ajax_id',
+                'name': 'county_ajax_name',
+                'label': 'County Ajax',
+                'na': True,
+                'hint': 'Select a County by Ajax',
+                'parent_hint': 'Select ajax State First',
+                'parent_filter': 'state_ajax_id'
             },
         }
 
