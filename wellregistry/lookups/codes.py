@@ -80,7 +80,17 @@ class Codes:
         :return: a dictionary of county codes and descriptions
 
         """
-        return self.get_codes('county', filter_text)
+        counties = self.get_codes('county', filter_text)
+
+        for county in counties:
+            name = counties.get(county)
+            if ',' in name:
+                names = name.split(',')
+                names.reverse()
+                name = ', '.join(names)
+                counties[county] = name
+
+        return counties
 
     def get_state_codes(self, filter_text=None):
         """
