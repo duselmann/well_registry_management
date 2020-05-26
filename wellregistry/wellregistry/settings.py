@@ -134,7 +134,8 @@ ENVIRONMENT = {
     'APP_CLIENT_USERNAME': os.getenv('APP_CLIENT_USERNAME'),
     'APP_CLIENT_PASSWORD': os.getenv('APP_CLIENT_PASSWORD'),
 
-    'LOOKUP_VALUES_CACHE_DURATION': int(os.getenv('LOOKUP_VALUES_CACHE_DURATION', '1000')),
+    'LOOKUP_URL_HOST': os.getenv('LOOKUP_URL_HOST', 'https://www.waterqualitydata.us'),
+    'URL_CONTENT_CACHE_DURATION': int(os.getenv('URL_CONTENT_CACHE_DURATION', '1000')),
 }
 
 # short alias
