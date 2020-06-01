@@ -43,7 +43,11 @@ class UrlContentCache:
 
         if content is None:
             UrlContentCache.LOG.debug('using cache: %s', url)
-            content = self.cache.get(url)['content']
+            cached_response = self.cache.get(url)
+            if cached_response:
+                content = cached_response['content']
+            else:
+                content = '<empty></empty>'
 
         UrlContentCache.LOG.debug('update cache')
         self._cache_entry(duration, url, content)
